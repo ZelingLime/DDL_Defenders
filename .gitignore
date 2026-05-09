@@ -1,0 +1,17 @@
+# 忽略编译生成的文件夹
+win32-build/
+bin/
+obj/
+*.exe
+*.lib
+*.dll
+*.pdb
+*.ilk
+
+# 忽略 Visual Studio 的缓存文件夹
+.vs/
+*.user
+*.suo
+
+# 忽略 Mac 系统文件
+.DS_Store
