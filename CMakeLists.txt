@@ -53,7 +53,6 @@ set(GAME_RES_FOLDER
 if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
-
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
@@ -62,7 +61,10 @@ list(APPEND GAME_SOURCE
      Classes/Role.cpp
      Classes/Player.cpp
      Classes/MoodSystem.cpp
+     Classes/SaveManager.cpp
+     Classes/AudioManager.cpp
      )
+
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/HelloWorldScene.h
@@ -70,8 +72,10 @@ list(APPEND GAME_HEADER
      Classes/Role.h
      Classes/Player.h
      Classes/MoodSystem.h
+     Classes/PlayerRecord.h
+     Classes/SaveManager.h
+     Classes/AudioManager.h
      )
-
 if(ANDROID)
     # change APP_NAME to the share library name for Android, it's value depend on AndroidManifest.xml
     set(APP_NAME MyGame)
@@ -140,6 +144,7 @@ endif()
 target_link_libraries(${APP_NAME} cocos2d)
 target_include_directories(${APP_NAME}
         PRIVATE Classes
+        PRIVATE ${COCOS2DX_ROOT_PATH}/cocos
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
 )
 

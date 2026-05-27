@@ -18,3 +18,11 @@ obj/
 
 
 cocos2d/
+# Visual Studio / CMake generated files
+build_vs2022_win32/
+out/
+.vs/
+CMakeSettings.json
+
+# Runtime generated save files
+*.dat
