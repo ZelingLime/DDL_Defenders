@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 
-WaveManager* WaveManager::create(Player* player, Layer* parentLayer)
+WaveManager* WaveManager::create(Player* player, Node* parentLayer)
 {
     WaveManager* mgr = new WaveManager();
     if (mgr && mgr->init(player, parentLayer))
@@ -17,7 +17,7 @@ WaveManager* WaveManager::create(Player* player, Layer* parentLayer)
     return nullptr;
 }
 
-bool WaveManager::init(Player* player, Layer* parentLayer)
+bool WaveManager::init(Player* player, Node* parentLayer)
 {
     _player = player;
     _parentLayer = parentLayer;
@@ -52,6 +52,11 @@ void WaveManager::stopSpawn()
 {
     _isSpawning = false;
     _enemiesToSpawn = 0;
+}
+
+std::vector<Enemy*>& WaveManager::getAliveEnemies()
+{
+    return _aliveEnemies;
 }
 
 void WaveManager::spawnEnemy()
@@ -97,17 +102,57 @@ void WaveManager::spawnEnemy()
 
 void WaveManager::update(float dt)
 {
-    if (!_isSpawning) return;
-    if (!_player->isRoleAlive())
+    if (!_isSpawning)
+    {
+        return;
+    }
+
+    if (_player == nullptr || !_player->isRoleAlive())
     {
         stopSpawn();
         return;
     }
 
-    // 生成敌人
+    // 第1步：更新当前已经生成出来的敌人
+    for (auto it = _aliveEnemies.begin(); it != _aliveEnemies.end(); )
+    {
+        Enemy* enemy = *it;
+
+        if (enemy == nullptr)
+        {
+            it = _aliveEnemies.erase(it);
+            continue;
+        }
+
+        // 如果敌人已经死亡或非激活，就从场景中移除，并从_aliveEnemies列表中删除
+        if (!enemy->isRoleAlive() || !enemy->isObjectActive())
+        {
+            enemy->removeFromParent();
+            it = _aliveEnemies.erase(it);
+            continue;
+        }
+
+        // 敌人的移动、攻击冷却、追踪玩家都在updateEnemy(dt)中完成。
+        enemy->updateEnemy(dt);
+
+        // 更新之后再判断一次。
+        // 因为敌人可能在这一帧被其他逻辑设置为死亡或非激活。
+        if (!enemy->isRoleAlive() || !enemy->isObjectActive())
+        {
+            enemy->removeFromParent();
+            it = _aliveEnemies.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    // 第2步：按间隔继续刷怪
     if (_enemiesToSpawn > 0)
     {
         _spawnTimer -= dt;
+
         if (_spawnTimer <= 0.0f)
         {
             spawnEnemy();
@@ -115,26 +160,11 @@ void WaveManager::update(float dt)
             _spawnTimer = _spawnInterval;
         }
     }
-    else
+
+    // 第3步：判断这一波是否结束
+    if (_enemiesToSpawn <= 0 && _aliveEnemies.empty())
     {
-        // 没有需要生成的敌人了，等待所有敌人死亡
-        // 清理已经死亡的敌人
-        for (auto it = _aliveEnemies.begin(); it != _aliveEnemies.end(); )
-        {
-            if (!(*it)->isRoleAlive())
-            {
-                it = _aliveEnemies.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
-        // 如果全部死亡，波次结束
-        if (_aliveEnemies.empty())
-        {
-            onWaveCleared();
-        }
+        onWaveCleared();
     }
 }
 

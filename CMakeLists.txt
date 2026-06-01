@@ -57,10 +57,27 @@ endif()
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/HelloWorldScene.cpp
+
+     # 基础对象系统
      Classes/GameObject.cpp
      Classes/Role.cpp
      Classes/Player.cpp
      Classes/MoodSystem.cpp
+
+     # 敌人系统
+     Classes/Enemy.cpp
+     Classes/SleepyMonster.cpp
+     Classes/DDLMonster.cpp
+     Classes/WaveManager.cpp
+
+     # 武器、子弹、碰撞系统
+     Classes/Bullet.cpp
+     Classes/Weapon.cpp
+     Classes/KeyboardWave.cpp
+     Classes/CoffeeLaser.cpp
+     Classes/CollisionManager.cpp
+
+     # 存档与音频
      Classes/SaveManager.cpp
      Classes/AudioManager.cpp
      )
@@ -68,10 +85,28 @@ list(APPEND GAME_SOURCE
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/HelloWorldScene.h
+
+     # 基础对象系统
      Classes/GameObject.h
      Classes/Role.h
      Classes/Player.h
      Classes/MoodSystem.h
+
+     # 敌人系统
+     Classes/Enemy.h
+     Classes/SleepyMonster.h
+     Classes/DDLMonster.h
+     Classes/WaveManager.h
+
+     # 武器、子弹、碰撞系统
+     Classes/Bullet.h
+     Classes/Weapon.h
+     Classes/KeyboardWave.h
+     Classes/CoffeeLaser.h
+     Classes/CollisionManager.h
+     Classes/DamageCalculator.h
+
+     # 存档与音频
      Classes/PlayerRecord.h
      Classes/SaveManager.h
      Classes/AudioManager.h
