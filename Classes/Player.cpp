@@ -1,5 +1,4 @@
-ï»¿#include "Player.h"
-#include <algorithm>
+#include "Player.h"
 
 USING_NS_CC;
 
@@ -96,10 +95,10 @@ void Player::updatePlayer(float dt)
         return;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    // ¸üĞÂÇéĞ÷³ÖĞøÊ±¼ä
     moodSystem.updateMood(dt);
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½Şµï¿½Ê±ï¿½ï¿½
+    // ¸üĞÂÎŞµĞÊ±¼ä
     if (isInvincible)
     {
         invincibleTime -= dt;
@@ -184,7 +183,7 @@ void Player::die()
     isMoving = false;
     inputDirection = Vec2::ZERO;
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½Í¨Öª GameScene ï¿½ï¿½ï¿½ï¿½ Game Over
+    // ÕâÀïÒÔºó¿ÉÒÔÍ¨Öª GameScene ½øÈë Game Over
 }
 
 void Player::changeMood(MoodType mood)
@@ -264,28 +263,4 @@ int Player::getExp() const
 int Player::getLevel() const
 {
     return level;
-}
-
-float Player::getAttackPowerMultiplier() const
-{
-    return _attackPowerMul;
-}
-
-float Player::getAttackRangeMultiplier() const
-{
-    return _attackRangeMul;
-}
-
-void Player::onIrritableTriggered()
-{
-    // æ¯æ¬¡è¿›å…¥ Irritable å¢åŠ æˆ˜æ–—åŠ›ï¼ˆå¯æŒ‰ä½ ä»¬éœ€æ±‚æ”¹å¹…åº¦ï¼‰
-    // ä¾‹å¦‚ï¼šæ”»å‡»åŠ› +15%ï¼Œæ”»å‡»è·ç¦» +8%ï¼Œå¸¦ä¸Šé™
-    _attackPowerMul = std::min(3.0f, _attackPowerMul + 0.15f);
-    _attackRangeMul = std::min(3.0f, _attackRangeMul + 0.08f);
-}
-
-void Player::resetCombatModifiers()
-{
-    _attackPowerMul = 1.0f;
-    _attackRangeMul = 1.0f;
 }
