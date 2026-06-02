@@ -77,6 +77,16 @@ public:
     virtual int getExp() const;
     virtual int getLevel() const;
 
+    // ===== Combat modifiers (for future weapon/attack code) =====
+    float getAttackPowerMultiplier() const;
+    float getAttackRangeMultiplier() const;
+    void onIrritableTriggered();  // called when mood transitions to Irritable
+    void resetCombatModifiers();
+
+private:
+    float _attackPowerMul = 1.0f;
+    float _attackRangeMul = 1.0f;
+
 protected:
     MoodSystem moodSystem;             // ÇéÐ÷ÏµÍ³
 
